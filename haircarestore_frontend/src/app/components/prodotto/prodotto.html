@@ -1,0 +1,60 @@
+<div class="master-container">
+
+    <button class="back-btn" (click)="tornaAlCatalogo()">
+    ← Torna al Catalogo
+    </button>
+
+  <div *ngIf="loading()" class="spinner">
+    Connessione ai server in corso, caricamento scheda tecnica...
+    </div>
+
+  <div *ngIf="errorMsg()" class="error-box">
+    <span class="icon">⚠️</span> {{ errorMsg() }}
+    </div>
+
+  <div *ngIf="!loading() && !errorMsg() && prodotto()" class="detail-card">
+    
+    <div class="detail-visual">
+        <span class="category-badge">{{ prodotto()?.categoria }}</span>
+        <div class="image-container">
+        <img [src]="getImmagineProdotto(prodotto()!.codice)" alt="{{ prodotto()?.nome }}" class="product-img" />
+        </div>
+    </div>
+
+    <div class="detail-info">
+    <span class="product-code">Codice Prodotto: {{ prodotto()?.codice }}</span>
+    <h1 class="product-title">{{ prodotto()?.nome }}</h1>
+    <div class="title-divider"></div>
+    
+    <p class="product-description">
+        {{ prodotto()?.descrizione }}
+    </p>
+
+        <div class="specs-grid">
+        <div class="spec-item">
+            <span class="spec-label">Prezzo Listino</span>
+            <span class="spec-value price">{{ prodotto()?.prezzo | currency:'EUR':'symbol':'1.2-2' }}</span>
+        </div>
+        
+        <div class="spec-item">
+            <span class="spec-label">Disponibilità Magazzino</span>
+            <span class="spec-value" [ngClass]="{'out-of-stock': prodotto()!.quantita <= 0}">
+            {{ prodotto()!.quantita > 0 ? prodotto()?.quantita + ' unità' : 'Esaurito' }}
+        </span>
+        </div>
+    </div>
+
+    <button class="purchase-btn" [disabled]="prodotto()!.quantita <= 0" (click)="apriBannerAcquisto()">
+        {{ prodotto()!.quantita > 0 ? 'Procedi all\'Acquisto' : 'Prodotto Non Disponibile' }}
+    </button>
+    </div>
+
+</div>
+
+    <app-acquisto-banner 
+    *ngIf="mostraBannerAcquisto()" 
+    [codiceProdotto]="prodotto()!.codice" 
+    (chiudi)="chiudiBannerAcquisto()">
+    </app-acquisto-banner>
+
+</div>

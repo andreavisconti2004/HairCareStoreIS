@@ -1,0 +1,90 @@
+<div class="modal-overlay" (click)="annullaOperazione()">
+  
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    
+    <button class="close-x" (click)="annullaOperazione()">&times;</button>
+
+    <div *ngIf="loading()" class="spinner-overlay">
+      <div class="spinner">Elaborazione della transazione con i server...</div>
+    </div>
+
+    <div *ngIf="errorMsg()" class="error-box animate-fade">
+      <span class="icon">⚠️</span> {{ errorMsg() }}
+    </div>
+
+
+    <div *ngIf="fase() === 1" class="phase-container">
+      <header class="modal-header">
+        <span class="pre-title">Fase 1 di 2</span>
+        <h2>Verifica Account</h2>
+        <p>Inserisci le tue credenziali e la quantità desiderata per calcolare il riepilogo di spesa.</p>
+      </header>
+
+      <form (ngSubmit)="avviaAcquisto()" class="purchase-form">
+        <div class="form-group">
+          <label for="username">Nome Utente</label>
+          <input type="text" id="username" [ngModel]="nomeUtente()" (ngModelChange)="nomeUtente.set($event)" name="username" placeholder="Inserisci il tuo username" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" [ngModel]="password()" (ngModelChange)="password.set($event)" name="password" placeholder="••••••••" required />
+        </div>
+
+        <div class="form-group">
+          <label for="quantita">Quantità</label>
+          <input type="number" id="quantita" [ngModel]="quantita()" (ngModelChange)="quantita.set($event)" name="quantita" min="1" required />
+        </div>
+
+        <div class="action-buttons">
+          <button type="button" class="btn-secondary" (click)="annullaOperazione()">Annulla</button>
+          <button type="submit" class="btn-primary">Verifica Dati →</button>
+        </div>
+      </form>
+    </div>
+
+
+    <div *ngIf="fase() === 2" class="phase-container animate-fade">
+      <header class="modal-header">
+        <span class="pre-title">Fase 2 di 2</span>
+        <h2>Riepilogo Ordine</h2>
+        <p>Verifica le informazioni logistiche e finanziarie estratte dal sistema prima di emettere l'ordine.</p>
+      </header>
+
+      <div class="summary-details">
+        <div class="summary-item">
+          <span class="label">Indirizzo di Spedizione</span>
+          <span class="value">{{ riepilogo()?.indirizzo }}</span>
+        </div>
+
+        <div class="summary-item">
+          <span class="label">Metodo di Pagamento Registrato</span>
+          <span class="value font-mono">{{ riepilogo()?.cartaDiCredito }}</span>
+        </div>
+
+        <div class="summary-item total-box">
+          <span class="label">Costo Totale</span>
+          <span class="value price">{{ riepilogo()?.costoTotale }}</span>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button type="button" class="btn-secondary" (click)="annullaOperazione()">Annulla Ordine</button>
+        <button type="button" class="btn-primary btn-confirm" (click)="confermaEmissione()">Conferma e Paga</button>
+      </div>
+    </div>
+
+
+    <div *ngIf="fase() === 3" class="phase-container text-center animate-fade">
+      <div class="success-icon">✓</div>
+      <h2>Ordine Elaborato!</h2>
+      <p class="success-text">{{ successMsg() }}</p>
+      <p class="sub-text">La transazione è stata registrata correttamente. Riceverai una notifica di riepilogo!</p>
+      
+      <button type="button" class="btn-primary" style="margin-top: 20px;" (click)="annullaOperazione()">
+        Chiudi Finestra
+      </button>
+    </div>
+
+  </div>
+</div>

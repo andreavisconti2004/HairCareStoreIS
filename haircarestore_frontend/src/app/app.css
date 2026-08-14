@@ -1,0 +1,86 @@
+/* Specifichiamo le regole stilistiche della pagina statica html*/
+body {
+  /* Elimina i margini e i riempimenti di default del browser che creerebbero spazi bianchi vuoti attorno al sito */
+  margin: 0;
+  padding: 0;
+  /* Stile e colore del font principale */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #2c1d11;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Contenitore principale dell'applicazione */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-image: url('/Background.png');
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+/**
+ * Rappresenta la barra superiore fissa dello store.
+ */
+.global-header {
+  background: rgba(253, 248, 240, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(197, 155, 109, 0.15);
+  padding: 16px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 30px rgba(44, 29, 17, 0.02);
+}
+
+/**
+ * Centra il contenuto dell'header stabilendo una larghezza massima per schermi grandi.
+ */
+.header-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/**
+ * Raggruppa l'icona dello shop in formato emoji e il nome del brad Hair Care Store.
+ */
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/**
+ * Stile specifico per il logo, l'emoji.
+ */
+.store-logo {
+  height: 42px;        
+  width: auto;         
+  object-fit: contain;
+}
+
+/**
+ * Stile specifico per il nome testuale del negozio.
+ */
+.store-title {
+  font-size: 27px;
+  font-weight: 800;
+  color: #2c1d11;
+  letter-spacing: -0.5px;
+}
+
+/**
+ * Questa classe controlla lo spazio in cui Angular inietterà i vari componenti dinamicamente.
+ */
+.main-content-wrapper {
+  flex: 1;
+  /* Crea un distacco verticale di 100px sopra e sotto il contenuto iniettato (la lista prodotti), 
+     evitando che le card tocchino l'header o il fondo dello schermo */
+  padding: 100px 0;
+}

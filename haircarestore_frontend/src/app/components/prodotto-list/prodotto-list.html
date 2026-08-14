@@ -1,0 +1,29 @@
+<div class="master-container">
+
+<header class="list-header">
+    <span class="pre-title">Scopri la nostra</span>
+    <h1>Linea HairCare</h1>
+    <div class="title-divider"></div>
+    <p>Seleziona un prodotto per visualizzarne la scheda tecnica completa e procedere all'acquisto</p>
+</header>
+
+  <div *ngIf="loading()" class="spinner">
+    Connessione ai server dello store in corso...
+    </div>
+
+  <div *ngIf="errorMsg()" class="error-box">
+        <span class="icon">⚠️</span> {{ errorMsg() }}
+    </div>
+
+  <div *ngIf="!loading() && !errorMsg()" class="grid-layout">
+    
+      <div *ngFor="let p of prodotti()" class="minimal-card" (click)="navigaVersoDettaglio(p.codice)">
+        <div class="card-icon">
+            <img [src]="getImmagineProdotto(p.codice)" alt="{{ p.nome }}" class="product-img" />
+        </div>
+
+        <h3 class="product-title">{{ p.nome }}</h3>
+            <button class="action-link">Vedi Scheda →</button>
+        </div>
+    </div>
+</div>
