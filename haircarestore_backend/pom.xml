@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    pom.xml = "Project Object Model" di Maven.
+    Descrive il progetto, le sue dipendenze, come compilarlo e come
+    impacchettarlo. Maven legge questo file e:
+    	- scarica le dipendenze (e le loro dipendenze transitive) da Maven
+		Central nella cache locale ~/.m2/repository;
+    	- compila i sorgenti in target/classes;
+    	- esegue i test;
+    	- produce un .jar eseguibile in target/.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- <parent> indica un POM "padre" da cui ereditare configurazioni. -->
+		
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>4.1.0</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+<!--
+	Coordinate Maven del progetto:
+	- groupId: Rappresenta lo spazio dei nomi o il pacchetto radice dell'organizzazione.
+	- artifactId: È il nome specifico del singolo progetto.
+	- version: Indica la versione corrente del software.
+	La dicitura 0.0.1-SNAPSHOT specifica che il progetto è ancora in fase di sviluppo attivo.
+-->
+
+	<groupId>com.andreavisconti</groupId>
+	<artifactId>haircarestore_backend</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>haircarestore_backend</name>
+	<description/>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+
+	<!-- Versione di Java richiesta. Spring Boot 4.0.6 richiede Java 17+. -->
+
+	<properties>
+		<java.version>25</java.version>
+	</properties>
+
+	<dependencies>
+
+		<!--
+			La dependency spring-boot-starter-data-jpa introduce l'ORM (Object-Relational Mapping)
+			Hibernate per mappare le entità Java alle entità delle tabelle del database relazionale,
+			eliminando la necessità di scivere codice SQL manuale.
+		-->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!--
+			La dependency spring-boot-starter-web include:
+			- Spring MVC, il framework principale del progetto Spring dedicato allo sviluppo di applicazioni web.
+			- Il server web embedded Tomcat.
+			- Jackson per la gestione dei dati in formato JSON
+		-->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
+		</dependency>
+
+		<!--
+			La dependency spring-boot-starter-validation importa Hibernate Validator (l'implementazione standard 
+			della specifica Jakarta Bean Validation), che permette di validare i dati in ingresso usando le 
+			annotazioni.
+		-->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<!--
+			La dependency mysql-connector-j è la libreria del vendor MySQL essenziale per permettere
+			all'applicazione di comunicare stabilmente con il database MySQL.
+		-->
+
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<!--
+		Il plugin spring-boot-maven-plugin intercetta il comando di build mvn package
+		e si occupa di collezionare tutto il codice compilato e le dipendenze esterne.
+		Le comprime all'interno di un unico file .jar eseguibile.
+		In questo modo, per far partire l'intero back-end ovunque, basterà lanciare dal terminale il comando:
+		java -jar nomefile.jar.
+	-->
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

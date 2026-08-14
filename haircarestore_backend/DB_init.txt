@@ -1,0 +1,64 @@
+CREATE TABLE PRODOTTI (
+    codice CHAR(15),
+    nome VARCHAR(50) NOT NULL,
+    descrizione VARCHAR(100),
+    categoria VARCHAR(15),
+    prezzo DECIMAL(6,2) NOT NULL,
+    quantita INT NOT NULL,
+    CONSTRAINT PK_PRODOTTI PRIMARY KEY (codice),
+    CONSTRAINT CHK_PREZZO CHECK (prezzo >= 0),
+    CONSTRAINT CHK_QUANTITA CHECK (quantita >= 0),
+    CONSTRAINT CHK_CODICE CHECK (codice REGEXP '^[a-zA-Z0-9-]+$')
+);
+
+CREATE TABLE FATTORINI (
+    id INT AUTO_INCREMENT,
+    nome VARCHAR(20) NOT NULL,
+    cognome VARCHAR(20) NOT NULL,
+    telefono VARCHAR(12) NOT NULL,
+    email VARCHAR(50),
+    CONSTRAINT PK_FATTORINI PRIMARY KEY (id)
+);
+
+CREATE TABLE CLIENTI_REGISTRATI (
+    nome_utente VARCHAR(20),
+    password VARCHAR(20) NOT NULL,
+    indirizzo VARCHAR(50) NOT NULL,
+    telefono VARCHAR(12) NOT NULL,
+    carta_di_credito VARCHAR(16) NOT NULL,
+    CONSTRAINT PK_CLIENTI_REGISTRATI PRIMARY KEY (nome_utente),
+    CONSTRAINT CHK_NOME_UTENTE CHECK (nome_utente REGEXP '^[a-zA-Z0-9]+$'),
+    CONSTRAINT CHK_PASSWORD CHECK (LENGTH(password) BETWEEN 8 AND 20 AND password REGEXP '[^a-zA-Z0-9]')
+);
+
+CREATE TABLE ORDINI (
+    id INT AUTO_INCREMENT,
+    data DATE NOT NULL,
+    ora TIME NOT NULL,
+    costo_totale DECIMAL(10,2) NOT NULL,
+    stato ENUM('In_corso', 'Confermato', 'Spedito', 'Consegnato') NOT NULL DEFAULT 'In_corso',
+    quantita INT NOT NULL,
+    data_consegna DATE DEFAULT NULL,
+    ora_consegna TIME DEFAULT NULL,
+    prodotto CHAR(15) NOT NULL,
+    fattorino INT NOT NULL,
+    cliente_registrato VARCHAR(20) NOT NULL,
+    CONSTRAINT PK_ORDINI PRIMARY KEY (id),
+    CONSTRAINT CHK_QUANTITA CHECK (quantita > 0),
+    CONSTRAINT FK_PRODOTTO FOREIGN KEY (prodotto) REFERENCES PRODOTTI (codice) ON UPDATE CASCADE ON DELETE NO ACTION,
+    CONSTRAINT FK_FATTORINO FOREIGN KEY (fattorino) REFERENCES FATTORINI (id) ON UPDATE CASCADE ON DELETE NO ACTION,
+    CONSTRAINT FK_CLIENTI_REGISTRATI FOREIGN KEY (cliente_registrato) REFERENCES CLIENTI_REGISTRATI (nome_utente) ON UPDATE CASCADE ON DELETE NO ACTION
+);
+
+
+INSERT INTO PRODOTTI (codice, nome, descrizione, categoria, prezzo, quantita) VALUES
+('KER-SHAM250-DRY', 'Shampoo Nutriente Capelli Secchi 250ml', 'Shampoo idratante per capelli secchi e danneggiati, arricchito con cheratina', 'SHAMPOO', 12.50, 15),
+('OIL-ARGAN100-ST', 'Olio di Argan Puro 100ml', 'Olio ristrutturante e idratante per lo styling e finish lucente', 'OLIO', 24.00, 8),
+('MSK-REPAIR300-C', 'Maschera Riparatrice Intensiva 300ml', 'Maschera post-colore per capelli sfibrati e trattati', 'MASCHERA', 18.90, 20);
+
+INSERT INTO FATTORINI (nome, cognome, telefono, email) VALUES
+('Anna', 'Pagano', '3334567890', 'anna.pagano@gmail.com'),
+('Mattia', 'Visconti', '3471122334', 'm.visconti@libero.it');
+
+INSERT INTO CLIENTI_REGISTRATI (nome_utente, password, indirizzo, telefono, carta_di_credito) VALUES
+('Hendrix', 'N46007557!', 'Via Marenola 22, 8004 Giugliano in Campania', '3922539102', '1234567890123456'),
